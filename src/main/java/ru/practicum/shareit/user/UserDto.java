@@ -9,6 +9,7 @@ import ru.practicum.shareit.exception.ObjectNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 @Data
@@ -62,7 +63,7 @@ public class UserDto implements UserStorage {
             user.setName(getUser(id).getName());
         }
         for (User userOne : users.values()) {
-            if (userOne.getId() != id) {
+            if (!Objects.equals(userOne.getId(), id)) {
                 if (userOne.getEmail().equals(user.getEmail())) {
                     throw new ObjectNotFoundException("Такой емэйл уже занят");
                 }
