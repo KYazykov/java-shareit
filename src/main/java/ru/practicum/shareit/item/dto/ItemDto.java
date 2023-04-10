@@ -41,6 +41,7 @@ public class ItemDto implements ItemStorage {
         this.isAvailable = isAvailable;
         this.requestStatus = requestStatus;
     }
+
     public static ItemDto toItemDto(Item item) {
         return new ItemDto(
                 item.getName(),
@@ -48,16 +49,19 @@ public class ItemDto implements ItemStorage {
                 item.getAvailable(),
                 item.getRequest() != null ? item.getRequest().getId() : null);
     }
+
     @Override
-    public List<Item> getItems(Long userId){
+    public List<Item> getItems(Long userId) {
         return new ArrayList<>(userDto.getUser(userId).getUserItems().values());
     }
+
     @Override
-    public Item getItem(Integer itemId){
+    public Item getItem(Integer itemId) {
         return items.get(itemId);
     }
+
     @Override
-    public Item addItem(Long userId, Item item){
+    public Item addItem(Long userId, Item item) {
         User user = userDto.getUser(userId);
         if (item.getAvailable() == null) {
             throw new ItemNotFoundException("Предмет должен быть доступен для аренды");
@@ -71,10 +75,11 @@ public class ItemDto implements ItemStorage {
         item.setId(id++);
         item.setOwner(userId);
         items.put(item.getId(), item);
-        user.getUserItems().put(item.getId(),item);
+        user.getUserItems().put(item.getId(), item);
         log.info("Предмет добавлен: {}", item);
         return item;
     }
+
     @Override
     public Item updateItem(Integer itemId, Long userId, Item item) {
         User user = userDto.getUser(userId);
@@ -102,23 +107,24 @@ public class ItemDto implements ItemStorage {
         item.setId(itemId);
         item.setOwner(userId);
         items.put(itemId, item);
-        user.getUserItems().put(itemId,item);
+        user.getUserItems().put(itemId, item);
         log.info("Предмет обновлен: {}", item);
         return item;
     }
+
     @Override
     public List<Item> searchItem(String text) {
         List<Item> selectedItems = new ArrayList<>();
         if (text.isBlank()) {
             return List.of();
         }
-        for (Item item: items.values()) {
+        for (Item item : items.values()) {
             if (item.getName().toLowerCase().contains(text.toLowerCase())
                     || item.getDescription().toLowerCase().contains(text.toLowerCase()) && item.getAvailable()) {
                 selectedItems.add(item);
             }
         }
-    return selectedItems;
+        return selectedItems;
     }
 }
 

@@ -14,10 +14,10 @@ import java.util.List;
 @Data
 @RequiredArgsConstructor
 @Slf4j
-public class UserDto implements UserStorage{
+public class UserDto implements UserStorage {
 
     private int id = 1;
-    private static HashMap<Long,User> users = new HashMap<>();
+    private static HashMap<Long, User> users = new HashMap<>();
 
     @Override
     public List<User> getUsers() {
@@ -39,8 +39,8 @@ public class UserDto implements UserStorage{
         if (users.containsKey(user.getId()) || users.containsValue(user)) {
             throw new ObjectNotFoundException("Такой пользователь уже есть");
         }
-        for (User userOne: users.values()) {
-            if(userOne.getEmail().equals(user.getEmail())) {
+        for (User userOne : users.values()) {
+            if (userOne.getEmail().equals(user.getEmail())) {
                 throw new ObjectNotFoundException("Такой емэйл уже занят");
             }
         }
@@ -61,7 +61,7 @@ public class UserDto implements UserStorage{
         if (user.getName() == null) {
             user.setName(getUser(id).getName());
         }
-        for (User userOne: users.values()) {
+        for (User userOne : users.values()) {
             if (userOne.getId() != id) {
                 if (userOne.getEmail().equals(user.getEmail())) {
                     throw new ObjectNotFoundException("Такой емэйл уже занят");
@@ -73,6 +73,7 @@ public class UserDto implements UserStorage{
         log.info("Пользователь обнавлен email: {}", user);
         return user;
     }
+
     @Override
     public Boolean deleteUser(Long id) {
         users.remove(id);
@@ -91,5 +92,7 @@ public class UserDto implements UserStorage{
         return new UserDto(
                 user.getName(),
                 user.getEmail());
-    };
+    }
+
+    ;
 }

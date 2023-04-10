@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
 import java.util.Collection;
 
 
@@ -27,15 +26,18 @@ public class UserController {
     public User getUser(@PathVariable Long id) {
         return userDto.getUser(id);
     }
+
     @PostMapping
     public User addUser(@Valid @RequestBody User user) {
         return userDto.addUser(user);
     }
+
     @PatchMapping("/{id}")
     public User updateUser(@PathVariable Long id, @RequestBody User user) {
         return userDto.updateUser(id, user);
     }
-    @DeleteMapping ("/{id}")
+
+    @DeleteMapping("/{id}")
     public Boolean deleteUser(@PathVariable Long id) {
         return userDto.deleteUser(id);
     }
