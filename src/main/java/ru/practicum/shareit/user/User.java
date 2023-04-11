@@ -9,9 +9,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.HashMap;
 
-/**
- * TODO Sprint add-controllers.
- */
 @Data
 @RequiredArgsConstructor
 public class User {
@@ -27,4 +24,10 @@ public class User {
     @EqualsAndHashCode.Exclude
     private String name;
 
+    public User(Long id, HashMap<Integer, Item> userItems, String email, String name) {
+        this.id = id;
+        this.userItems = userItems;
+        this.email = email;
+        this.name = name;
+    }
 }

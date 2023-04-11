@@ -7,9 +7,6 @@ import ru.practicum.shareit.request.ItemRequest;
 
 import javax.validation.constraints.NotBlank;
 
-/**
- * TODO Sprint add-controllers.
- */
 @Data
 @RequiredArgsConstructor
 public class Item {
@@ -27,6 +24,12 @@ public class Item {
     private long owner;
     private ItemRequest request;
 
-    public Item(String name, String description, boolean available, Integer integer) {
+    public Item(int id, String name, String description, Boolean available, long owner, ItemRequest request) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.available = available;
+        this.owner = owner;
+        this.request = request;
     }
 }

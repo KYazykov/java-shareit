@@ -5,9 +5,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 
-/**
- * TODO Sprint add-item-requests.
- */
 @Data
 @RequiredArgsConstructor
 public class ItemRequest {
