@@ -11,7 +11,7 @@ import java.util.Collection;
 @Slf4j
 public class UserController {
 
-    UserStorageImp userStorageImp = new UserStorageImp();
+    private final UserStorageImp userStorageImp = new UserStorageImp();
 
     @GetMapping
     public Collection<UserDto> getUsers() {
@@ -24,13 +24,13 @@ public class UserController {
     }
 
     @PostMapping
-    public User addUser(@Valid @RequestBody UserDto userDto) {
-        return userStorageImp.addUser(UserStorageImp.toUser(userDto));
+    public UserDto addUser(@Valid @RequestBody UserDto userDto) {
+        return userStorageImp.addUser(UserMapper.toUser(userDto));
     }
 
     @PatchMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
-        return userStorageImp.updateUser(id, UserStorageImp.toUser(userDto));
+    public UserDto updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
+        return userStorageImp.updateUser(id, UserMapper.toUser(userDto));
     }
 
     @DeleteMapping("/{id}")

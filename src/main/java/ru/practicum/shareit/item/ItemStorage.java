@@ -11,9 +11,9 @@ public interface ItemStorage {
 
     ItemDto getItem(Integer itemId);
 
-    Item addItem(Long userId, Item item);
+    ItemDto addItem(Long userId, Item item);
 
-    Item updateItem(Integer itemId, Long userId, Item item);
+    ItemDto updateItem(Integer itemId, Long userId, Item item);
 
     List<ItemDto> searchItem(String text);
 }

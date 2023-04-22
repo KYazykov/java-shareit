@@ -8,9 +8,9 @@ public interface UserStorage {
 
     UserDto getUser(Long id);
 
-    User addUser(User user);
+    UserDto addUser(User user);
 
-    User updateUser(Long id, User user);
+    UserDto updateUser(Long id, User user);
 
     Boolean deleteUser(Long id);
 

@@ -1,13 +1,13 @@
 package ru.practicum.shareit.item;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.practicum.shareit.exception.ItemNotFoundException;
 import ru.practicum.shareit.exception.ObjectNotFoundException;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
-import ru.practicum.shareit.user.UserStorageImp;
+import ru.practicum.shareit.user.UserMapper;
+import ru.practicum.shareit.user.UserService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,31 +15,15 @@ import java.util.List;
 import java.util.Objects;
 
 @Slf4j
-@RequiredArgsConstructor
+
 public class ItemStorageImpl implements ItemStorage {
 
     private final HashMap<Integer, Item> items = new HashMap<>();
-    UserStorageImp userStorageImp = new UserStorageImp();
+    private final UserService userService;
     private int id = 1;
 
-    public static Item toItem(ItemDto itemDto) {
-        return new Item(
-                itemDto.getId(),
-                itemDto.getName(),
-                itemDto.getDescription(),
-                itemDto.getAvailable(),
-                itemDto.getOwner(),
-                itemDto.getRequest() != null ? itemDto.getRequest() : null);
-    }
-
-    public static ItemDto toItemDto(Item item) {
-        return new ItemDto(
-                item.getId(),
-                item.getName(),
-                item.getDescription(),
-                item.getAvailable(),
-                item.getOwner(),
-                item.getRequest() != null ? item.getRequest() : null);
+    public ItemStorageImpl(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
@@ -47,7 +31,7 @@ public class ItemStorageImpl implements ItemStorage {
         List<ItemDto> itemDtoList = new ArrayList<>();
         for (Item item : items.values()) {
             if (item.getOwner() == userId) {
-                itemDtoList.add(toItemDto(item));
+                itemDtoList.add(ItemMapper.toItemDto(item));
             }
         }
         return itemDtoList;
@@ -55,12 +39,12 @@ public class ItemStorageImpl implements ItemStorage {
 
     @Override
     public ItemDto getItem(Integer itemId) {
-        return toItemDto(items.get(itemId));
+        return ItemMapper.toItemDto(items.get(itemId));
     }
 
     @Override
-    public Item addItem(Long userId, Item item) {
-        User user = UserStorageImp.toUser(userStorageImp.getUser(userId));
+    public ItemDto addItem(Long userId, Item item) {
+        User user = UserMapper.toUser(userService.getUser(userId));
         if (item.getAvailable() == null) {
             throw new ItemNotFoundException("Предмет должен быть доступен для аренды");
         }
@@ -75,12 +59,12 @@ public class ItemStorageImpl implements ItemStorage {
         items.put(item.getId(), item);
         user.getUserItems().put(item.getId(), item);
         log.info("Предмет добавлен: {}", item);
-        return item;
+        return ItemMapper.toItemDto(item);
     }
 
     @Override
-    public Item updateItem(Integer itemId, Long userId, Item item) {
-        User user = UserStorageImp.toUser(userStorageImp.getUser(userId));
+    public ItemDto updateItem(Integer itemId, Long userId, Item item) {
+        User user = UserMapper.toUser(userService.getUser(userId));
         if (!items.containsKey(itemId)) {
             throw new ObjectNotFoundException("Такого предмета нет");
         }
@@ -107,7 +91,7 @@ public class ItemStorageImpl implements ItemStorage {
         items.put(itemId, item);
         user.getUserItems().put(itemId, item);
         log.info("Предмет обновлен: {}", item);
-        return item;
+        return ItemMapper.toItemDto(item);
     }
 
     @Override
@@ -119,7 +103,7 @@ public class ItemStorageImpl implements ItemStorage {
         for (Item item : items.values()) {
             if (item.getName().toLowerCase().contains(text.toLowerCase())
                     || item.getDescription().toLowerCase().contains(text.toLowerCase()) && item.getAvailable()) {
-                selectedItems.add(toItemDto(item));
+                selectedItems.add(ItemMapper.toItemDto(item));
             }
         }
         return selectedItems;
