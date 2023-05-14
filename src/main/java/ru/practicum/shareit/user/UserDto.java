@@ -11,7 +11,8 @@ import java.util.HashMap;
 
 @Data
 @RequiredArgsConstructor
-public class User {
+public class UserDto {
+
     private Long id;
     private HashMap<Integer, Item> userItems = new HashMap<>();
 
@@ -24,7 +25,7 @@ public class User {
     @EqualsAndHashCode.Exclude
     private String name;
 
-    public User(Long id, HashMap<Integer, Item> userItems, String email, String name) {
+    public UserDto(Long id, HashMap<Integer, Item> userItems, String email, String name) {
         this.id = id;
         this.userItems = userItems;
         this.email = email;
