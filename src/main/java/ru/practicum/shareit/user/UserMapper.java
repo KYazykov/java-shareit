@@ -6,7 +6,9 @@ public class UserMapper {
                 user.getId(),
                 user.getUserItems(),
                 user.getEmail(),
-                user.getName());
+                user.getName(),
+                user.getBookings(),
+                user.getComments());
     }
 
     public static User toUser(UserDto userDto) {
@@ -14,7 +16,12 @@ public class UserMapper {
                 userDto.getId(),
                 userDto.getUserItems(),
                 userDto.getEmail(),
-                userDto.getName());
+                userDto.getName(),
+                userDto.getBookings(),
+                userDto.getComments());
     }
 
+    public static UserOnlyWithIdDto toUserOnlyWithIdDto(User user) {
+        return new UserOnlyWithIdDto(user.getId());
+    }
 }

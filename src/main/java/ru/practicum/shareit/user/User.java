@@ -1,33 +1,46 @@
 package ru.practicum.shareit.user;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
+import ru.practicum.shareit.booking.Booking;
+import ru.practicum.shareit.item.comment.Comment;
 import ru.practicum.shareit.item.model.Item;
 
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import java.util.HashMap;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
+@Entity
+@Builder(toBuilder = true)
+@Table(name = "users")
 @Data
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, updatable = false, unique = true)
     private Long id;
-    private HashMap<Integer, Item> userItems = new HashMap<>();
+
+    @OneToMany(mappedBy = "owner")
+    private List<Item> userItems;
 
     @Email(message = "Почта не соответствует формату.")
     @NotBlank(message = "Поле имени не может быть пустым.")
+    @NotNull
     @EqualsAndHashCode.Exclude
+    @Column(name = "email", nullable = false)
     private String email;
 
     @NotBlank(message = "Поле имени не может быть пустым.")
     @EqualsAndHashCode.Exclude
+    @Column(name = "name", nullable = false)
     private String name;
 
-    public User(Long id, HashMap<Integer, Item> userItems, String email, String name) {
-        this.id = id;
-        this.userItems = userItems;
-        this.email = email;
-        this.name = name;
-    }
+    @OneToMany(mappedBy = "booker")
+    private List<Booking> bookings;
+    @OneToMany(mappedBy = "author")
+    private List<Comment> comments;
+
 }

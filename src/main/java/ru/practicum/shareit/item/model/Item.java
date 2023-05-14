@@ -1,35 +1,54 @@
 package ru.practicum.shareit.item.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
-import ru.practicum.shareit.request.ItemRequest;
+import ru.practicum.shareit.booking.Booking;
+import ru.practicum.shareit.item.comment.Comment;
+import ru.practicum.shareit.user.User;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
+
+@Entity
+@Table(name = "items")
 @Data
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class Item {
 
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, updatable = false, unique = true)
+    private Long id;
     @NotBlank(message = "Поле логина не может быть пустым.")
     @EqualsAndHashCode.Exclude
+    @Column(name = "name", nullable = false)
     private String name;
 
     @NotBlank(message = "Поле логина не может быть пустым.")
     @EqualsAndHashCode.Exclude
+    @Column(name = "description", nullable = false)
     private String description;
-    private Boolean available = null;
+    @Column(name = "is_available", nullable = false)
+    private Boolean available;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id", nullable = false)
+    @JsonIgnore
+    private User owner;
 
-    private long owner;
-    private ItemRequest request;
+    @Column(name = "request_id")
+    private Long requestId;  //
 
-    public Item(int id, String name, String description, Boolean available, long owner, ItemRequest request) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.available = available;
-        this.owner = owner;
-        this.request = request;
-    }
+    @OneToMany(mappedBy = "item")
+    @JsonIgnore
+    private List<Booking> bookings;
+
+    @OneToMany(mappedBy = "item")
+
+    private List<Comment> comments;
 }

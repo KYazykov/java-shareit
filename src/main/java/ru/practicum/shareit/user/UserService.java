@@ -1,30 +1,17 @@
 package ru.practicum.shareit.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
-import ru.practicum.shareit.exception.ObjectNotFoundException;
 
 import java.util.List;
 
+public interface UserService {
+    List<UserDto> getAllUsers();
 
-@Service
-public class UserService {
-    private final UserStorage userStorage;
+    UserDto getUserById(Long id);
 
-    @Autowired
-    public UserService(@Qualifier("userStorageImp") UserStorage userStorage) {
-        this.userStorage = userStorage;
-    }
+    UserDto addUser(UserDto userDto);
 
-    public List<UserDto> getUsers() {
-        return userStorage.getUsers();
-    }
+    UserDto updateUser(Long id, UserDto userDto);
 
-    public UserDto getUser(Long id) {
-        if (UserStorageImp.users.containsKey(id)) {
-            throw new ObjectNotFoundException("Пользователь не найден");
-        }
-        return userStorage.getUser(id);
-    }
+    Boolean deleteUser(Long id);
+
 }
