@@ -1,13 +1,11 @@
 package ru.practicum.shareit.item.comment;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-import ru.practicum.shareit.item.ItemRepositoryJpa;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import ru.practicum.shareit.item.model.Item;
 
-@Component
-@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CommentMapper {
-    private final ItemRepositoryJpa itemRepositoryJpa;
 
     public static CommentDto toCommentDto(Comment comment) {
         return new CommentDto(
@@ -18,12 +16,12 @@ public class CommentMapper {
                 comment.getCreated());
     }
 
-    public Comment toComment(CommentDto commentDto) {
+    public static Comment toComment(CommentDto commentDto, Item item) {
         return new Comment(
                 commentDto.getId(),
                 commentDto.getText(),
-                itemRepositoryJpa.getReferenceById(commentDto.getItemId()),
-                itemRepositoryJpa.getReferenceById(commentDto.getItemId()).getOwner(),
+                item,
+                item.getOwner(),
                 commentDto.getCreated());
     }
 }

@@ -3,6 +3,7 @@ package ru.practicum.shareit.user;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.ObjectNotFoundException;
 
 import java.util.List;
@@ -34,6 +35,7 @@ public class UserServiceImp implements UserService {
                 .map(UserMapper::toUserDto).collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public UserDto addUser(UserDto userDto) {
         log.info("Добавление пользователя в БД.");
@@ -42,6 +44,7 @@ public class UserServiceImp implements UserService {
         return result;
     }
 
+    @Transactional
     @Override
     public UserDto updateUser(Long id, UserDto userDto) {
         userDto.setId(id);

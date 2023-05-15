@@ -31,16 +31,8 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRepositoryJpa bookingRepositoryJpa;
     private final ItemRepositoryJpa itemRepositoryJpa;
     private final UserRepositoryJpa userRepositoryJpa;
-    private final BookingMapper bookingMapper;
 
-
-    /**
-     * Создание брони в БД.
-     *
-     * @param bookerId   пользователь, пытающийся забронировать вещь.
-     * @param bookingDto создаваемая бронь.
-     * @return бронь из БД.
-     */
+    @Transactional
     @Override
     public BookingForResponse createBooking(Long bookerId, BookingDto bookingDto) {
         if (bookingDto.getItemId() == null) {
@@ -57,22 +49,12 @@ public class BookingServiceImpl implements BookingService {
 
         validateBooking(bookingDto, itemFromDB, bookerFromDb);
         bookingDto.setBookingStatus(BookingStatus.WAITING);
-        Booking booking = bookingMapper.toBooking(bookingDto);
+        Booking booking = BookingMapper.toBooking(bookingDto, itemFromDB);
         booking.setItem(itemFromDB);
         booking.setBooker(bookerFromDb);
         Booking result = bookingRepositoryJpa.save(booking);
-        return bookingMapper.toBookingForResponse(result);
+        return BookingMapper.toBookingForResponse(result);
     }
-
-    /**
-     * Обновить бронь в БД.
-     *
-     * @param ownerId   хозяин вещи.
-     * @param bookingId ID брони.
-     * @param approved  True - подтверждение со стороны хозяина вещи,
-     *                  False - отклонено хозяином вещи.
-     * @return обновлённая бронь.
-     */
     @Override
     @Transactional
     public BookingForResponse updateBooking(Long ownerId, Long bookingId, Boolean approved) {
@@ -87,38 +69,27 @@ public class BookingServiceImpl implements BookingService {
         User ownerFromDb = userRepositoryJpa.findById(ownerId).orElseThrow(() -> new ObjectNotFoundException("При " +
                 "обновлении бронирования не найден пользователь с ID = '" + ownerId + "' в БД."));
         List<Item> items = new ArrayList<>(ownerFromDb.getUserItems());
-        //Если у хозяина есть вещи с ID = id вещи из переданного метода.
         for (Item i : items) {
             Long itemIdFromBookingBd = bookingFromBd.getItem().getId();
-            //Если нашлась вещь, ID которой такая-то, то вернуть пользователю бронь на неё.
             if (i.getId().equals(itemIdFromBookingBd)) {
                 bookingFromBd.setBookingStatus(approved ? BookingStatus.APPROVED : BookingStatus.REJECTED);
                 Booking result = bookingRepositoryJpa.save(bookingFromBd);
-                return bookingMapper.toBookingForResponse(result);
+                return BookingMapper.toBookingForResponse(result);
             }
         }
         String message = "При обновлении брони у хозяина вещи эта вещь не найдена. Ошибка в запросе.";
         log.info(message);
         throw new ObjectNotFoundException(message);
     }
-
-    /**
-     * • Получение данных о конкретном бронировании (включая его статус).
-     * Может быть выполнено либо автором бронирования, либо владельцем вещи,
-     * к которой относится бронирование.
-     *
-     * @param userId    ID пользователя, делающего запрос.
-     * @param bookingId ID брони.
-     */
     @Override
     public BookingForResponse getWithStatusById(Long userId, Long bookingId) {
         Booking booking = bookingRepositoryJpa.findById(bookingId)
                 .orElseThrow(() -> new ObjectNotFoundException("Бронирование с ID = '" + bookingId
                         + " не найдено в БД при его получении."));
-        Long bookerId = booking.getBooker().getId();            //ID пользователя, забронировавшего вещь.
-        Long ownerId = booking.getItem().getOwner().getId();    //ID хозяина вещи в бронировании.
+        Long bookerId = booking.getBooker().getId();
+        Long ownerId = booking.getItem().getOwner().getId();
         if (userId.equals(bookerId) || userId.equals(ownerId)) {
-            return bookingMapper.toBookingForResponse(booking);
+            return BookingMapper.toBookingForResponse(booking);
         }
         throw new ObjectNotFoundException("Ошибка при получении брони с ID = '" + bookingId
                 + "'. Пользователь с ID = '" + userId
@@ -186,7 +157,7 @@ public class BookingServiceImpl implements BookingService {
             }
         }
         return result.stream()
-                .map(bookingMapper::toBookingForResponse).collect(Collectors.toList());
+                .map(BookingMapper::toBookingForResponse).collect(Collectors.toList());
     }
 
     @Override
@@ -245,7 +216,7 @@ public class BookingServiceImpl implements BookingService {
             }
         }
         return result.stream()
-                .map(bookingMapper::toBookingForResponse).collect(Collectors.toList());
+                .map(BookingMapper::toBookingForResponse).collect(Collectors.toList());
     }
 
     private void validateBooking(BookingDto bookingDto, Item item, User booker) {

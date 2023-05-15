@@ -3,6 +3,7 @@ package ru.practicum.shareit.item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.Booking;
 import ru.practicum.shareit.booking.BookingMapper;
 import ru.practicum.shareit.booking.BookingRepositoryJpa;
@@ -36,10 +37,8 @@ public class ItemServiceImpl implements ItemService {
     private final UserRepositoryJpa userRepository;
     private final CommentRepositoryJpa commentRepositoryJpa;
     private final BookingRepositoryJpa bookingRepositoryJpa;
-    private final BookingMapper bookingMapper;
-    private final CommentMapper commentMapper;
 
-
+    @Transactional
     @Override
     public ItemDto updateItem(Long itemId, Long userId, Item item) {
         Item itemFromDB = itemRepositoryJpa.findById(itemId)
@@ -71,6 +70,7 @@ public class ItemServiceImpl implements ItemService {
         return ItemMapper.toItemDto(itemRepositoryJpa.save(itemFromDB));
     }
 
+    @Transactional
     @Override
     public ItemDto addItem(Long userId, ItemDto itemDto) {
         if ((itemDto.getName() == null || itemDto.getName().isBlank())
@@ -101,11 +101,11 @@ public class ItemServiceImpl implements ItemService {
                 Booking lastBooking = findLastBookingByDate(bookings, now);
                 Booking nextBooking = findNextBookingByDate(bookings, now);
                 if (lastBooking != null && lastBooking.getBookingStatus().equals(BookingStatus.APPROVED)) {
-                    itemWithBAndC.setLastBooking(bookingMapper.toBookingForItemDto(lastBooking));
+                    itemWithBAndC.setLastBooking(BookingMapper.toBookingForItemDto(lastBooking));
                 }
                 if (nextBooking != null && (nextBooking.getBookingStatus().equals(BookingStatus.APPROVED) ||
                         nextBooking.getBookingStatus().equals(BookingStatus.WAITING))) {
-                    itemWithBAndC.setNextBooking(bookingMapper.toBookingForItemDto(nextBooking));
+                    itemWithBAndC.setNextBooking(BookingMapper.toBookingForItemDto(nextBooking));
                 }
             }
             if (itemWithBAndC.getComments() != null && !itemWithBAndC.getComments().isEmpty()) {
@@ -166,10 +166,10 @@ public class ItemServiceImpl implements ItemService {
             lastBooking = findLastBookingByDate(allBookings, now);
             if (nextBooking != null && (nextBooking.getBookingStatus().equals(BookingStatus.APPROVED) ||
                     nextBooking.getBookingStatus().equals(BookingStatus.WAITING))) {
-                itemWithBAndCDto.setNextBooking(bookingMapper.toBookingForItemDto(nextBooking));
+                itemWithBAndCDto.setNextBooking(BookingMapper.toBookingForItemDto(nextBooking));
             }
             if (lastBooking != null && lastBooking.getBookingStatus().equals(BookingStatus.APPROVED)) {
-                itemWithBAndCDto.setLastBooking(bookingMapper.toBookingForItemDto(lastBooking));
+                itemWithBAndCDto.setLastBooking(BookingMapper.toBookingForItemDto(lastBooking));
             }
         }
         List<CommentDto> commentDtoForResponse = new ArrayList<>();
@@ -185,6 +185,7 @@ public class ItemServiceImpl implements ItemService {
         return itemWithBAndCDto;
     }
 
+    @Transactional
     @Override
     public CommentDto saveComment(Long bookerId, Long itemId, CommentDto commentDto) {
         User userFromBd = userRepository.findById(bookerId).orElseThrow(() ->
@@ -216,7 +217,7 @@ public class ItemServiceImpl implements ItemService {
         }
         commentDto.setItemId(itemId);
         commentDto.setAuthorName(userFromBd.getName());
-        Comment commentForSave = commentMapper.toComment(commentDto);
+        Comment commentForSave = CommentMapper.toComment(commentDto, itemFromBd);
         commentForSave.setItem(itemFromBd);
         commentForSave.setAuthor(userFromBd);
         commentForSave.setCreated(LocalDateTime.now());
