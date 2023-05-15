@@ -55,8 +55,9 @@ public class BookingServiceImpl implements BookingService {
         Booking result = bookingRepositoryJpa.save(booking);
         return BookingMapper.toBookingForResponse(result);
     }
-    @Override
+
     @Transactional
+    @Override
     public BookingForResponse updateBooking(Long ownerId, Long bookingId, Boolean approved) {
         Booking bookingFromBd = bookingRepositoryJpa.findById(bookingId).orElseThrow(() -> new ObjectNotFoundException(
                 "При обновлении бронирования не найдено бронирование с ID = '" + bookingId + "' в БД."));
@@ -81,6 +82,7 @@ public class BookingServiceImpl implements BookingService {
         log.info(message);
         throw new ObjectNotFoundException(message);
     }
+
     @Override
     public BookingForResponse getWithStatusById(Long userId, Long bookingId) {
         Booking booking = bookingRepositoryJpa.findById(bookingId)
