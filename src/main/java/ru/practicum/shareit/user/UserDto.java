@@ -1,34 +1,28 @@
 package ru.practicum.shareit.user;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
+import ru.practicum.shareit.booking.Booking;
+import ru.practicum.shareit.item.comment.Comment;
 import ru.practicum.shareit.item.model.Item;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import java.util.HashMap;
+import java.util.List;
 
 @Data
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class UserDto {
-
     private Long id;
-    private HashMap<Integer, Item> userItems = new HashMap<>();
-
-    @Email(message = "Почта не соответствует формату.")
+    private List<Item> userItems;
+    @Email
     @NotBlank(message = "Поле имени не может быть пустым.")
-    @EqualsAndHashCode.Exclude
     private String email;
-
     @NotBlank(message = "Поле имени не может быть пустым.")
-    @EqualsAndHashCode.Exclude
     private String name;
+    private List<Booking> bookings;
+    private List<Comment> comments;
 
-    public UserDto(Long id, HashMap<Integer, Item> userItems, String email, String name) {
-        this.id = id;
-        this.userItems = userItems;
-        this.email = email;
-        this.name = name;
-    }
 }

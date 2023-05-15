@@ -3,28 +3,24 @@ package ru.practicum.shareit.item.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import ru.practicum.shareit.booking.Booking;
-import ru.practicum.shareit.item.comment.Comment;
-import ru.practicum.shareit.user.User;
+import ru.practicum.shareit.booking.dto.BookingForItemDto;
+import ru.practicum.shareit.item.comment.CommentDto;
 
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 
-
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class ItemDto {
+public class ItemDtoWithBookingAndComments {
     private Long id;
     @NotBlank(message = "Поле логина не может быть пустым.")
     private String name;
     @NotBlank(message = "Поле описания не может быть пустым.")
     private String description;
     private Boolean available = null;
-    private User owner;
+    private BookingForItemDto lastBooking;
+    private BookingForItemDto nextBooking;
     private Long requestId;
-    private List<Booking> bookings;
-    private List<Comment> comments;
-
+    private List<CommentDto> comments;
 }
-
