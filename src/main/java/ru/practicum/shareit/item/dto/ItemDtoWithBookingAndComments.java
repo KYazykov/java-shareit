@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import ru.practicum.shareit.booking.dto.BookingForItemDto;
@@ -12,6 +13,7 @@ import java.util.List;
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
+@Builder(toBuilder = true)
 public class ItemDtoWithBookingAndComments {
     private Long id;
     @NotBlank(message = "Поле логина не может быть пустым.")

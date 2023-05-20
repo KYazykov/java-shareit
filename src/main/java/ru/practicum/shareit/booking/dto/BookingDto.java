@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import ru.practicum.shareit.booking.BookingStatus;
-import ru.practicum.shareit.user.User;
+import ru.practicum.shareit.user.UserForResponseDto;
 
 import java.time.LocalDateTime;
 
@@ -20,7 +20,7 @@ public class BookingDto {
 
     private Long itemId;
 
-    private User booker;
+    private UserForResponseDto booker;
     @JsonAlias({"start"})
     private LocalDateTime startTime;
     @JsonAlias({"end"})

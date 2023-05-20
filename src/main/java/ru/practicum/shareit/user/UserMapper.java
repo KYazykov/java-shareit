@@ -25,6 +25,12 @@ public class UserMapper {
                 userDto.getComments());
     }
 
+    public static UserForResponseDto toUserForResponse(User user) {
+        return new UserForResponseDto(
+                user.getId(),
+                user.getName());
+    }
+
     public static UserOnlyWithIdDto toUserOnlyWithIdDto(User user) {
         return new UserOnlyWithIdDto(user.getId());
     }
