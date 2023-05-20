@@ -157,8 +157,8 @@ public class ItemServiceImpl implements ItemService {
                 .orElseThrow(() -> new UserNotFoundException("Ошибка при обновлении вещи с ID = " + itemId
                         + " пользователя с ID = " + ownerId + " в БД. В БД отсутствует запись о пользователе."));
         Item itemFromBd = itemRepositoryJpa.findById(itemId)
-                .orElseThrow(() -> new ItemNotFoundException("Ошибка при получении списка вещей пользователя с ID = "
-                        + ownerId + "в БД. В БД отсутствует запись о пользователе."));
+                .orElseThrow(() -> new ObjectNotFoundException("Ошибка при получении списка вещей пользователя с ID = "
+                        + ownerId + " в БД. В БД отсутствует запись о вещи."));
         List<Booking> allBookings = bookingRepositoryJpa.findAllByItemOrderByStartTimeDesc(itemFromBd);
         Booking lastBooking = null;
         Booking nextBooking = null;
