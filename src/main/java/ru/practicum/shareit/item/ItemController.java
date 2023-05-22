@@ -9,6 +9,8 @@ import ru.practicum.shareit.item.dto.ItemForResponseDto;
 import ru.practicum.shareit.item.model.Item;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController
@@ -44,8 +46,8 @@ public class ItemController {
 
     @GetMapping("/search")
     public List<ItemDto> search(@RequestParam(value = "text", required = false) String text,
-                                @RequestParam(name = "from", defaultValue = "0") int from,
-                                @RequestParam(name = "size", defaultValue = "10") int size) {
+                                @RequestParam(name = "from", defaultValue = "0") @PositiveOrZero int from,
+                                @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
         return itemService.searchItems(text, from, size);
     }
 

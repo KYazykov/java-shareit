@@ -15,9 +15,9 @@ import java.util.List;
 @Builder(toBuilder = true)
 @EqualsAndHashCode
 public class ItemRequestDtoWithAnswers {
-    Long id;
-    String description;
-    UserForResponseDto requester;
-    LocalDateTime created;
-    List<ItemForResponseDto> items;
+    private Long id;
+    private String description;
+    private UserForResponseDto requester;
+    private LocalDateTime created;
+    private List<ItemForResponseDto> items;
 }

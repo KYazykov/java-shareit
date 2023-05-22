@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingForResponse;
 
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController
@@ -42,8 +44,8 @@ public class BookingController {
     public List<BookingForResponse> getByUserId(@RequestHeader("X-Sharer-User-Id") Long userId,
                                                 @RequestParam(value = "state",
                                                         defaultValue = "ALL") String state,
-                                                @RequestParam(name = "from", defaultValue = "0") Integer from,
-                                                @RequestParam(name = "size", defaultValue = "20") Integer size) {
+                                                @RequestParam(name = "from", defaultValue = "0") @PositiveOrZero Integer from,
+                                                @RequestParam(name = "size", defaultValue = "20") @Positive Integer size) {
         log.info("Получение списка всех бронирований текущего пользователя.");
         return bookingService.getByUserId(userId, state, from, size);
     }
@@ -51,8 +53,8 @@ public class BookingController {
     @GetMapping("/owner")
     public List<BookingForResponse> getByOwnerId(@RequestHeader("X-Sharer-User-Id") Long userId,
                                                  @RequestParam(value = "state", defaultValue = "ALL") String state,
-                                                 @RequestParam(name = "from", defaultValue = "0") Integer from,
-                                                 @RequestParam(name = "size", defaultValue = "20") Integer size) {
+                                                 @RequestParam(name = "from", defaultValue = "0") @PositiveOrZero Integer from,
+                                                 @RequestParam(name = "size", defaultValue = "20") @Positive Integer size) {
         log.info("Получение списка бронирований для всех вещей текущего пользователя.");
         return bookingService.getByOwnerId(userId, state, from, size);
     }

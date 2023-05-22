@@ -167,8 +167,6 @@ class ItemRequestServiceImpTest {
         query = em.createQuery("Select ir from ItemRequest ir where ir.requester.id <> :userId", ItemRequest.class);
         List<ItemRequest> itemRequestList = query.setParameter("userId", savedOwnerDto.getId())
                 .getResultList();
-        System.out.println("Для проверки запросов в БД. itemRequestList: size = " + itemRequestList.size()
-                + "||\t\t\"" + itemRequestList.get(0).getDescription() + "\".");
 
         List<ItemRequestDtoWithAnswers> emptyItemsFromDbForRequester =
                 itemRequestService.getAllRequestForSee(savedRequesterDto.getId(), 0, 5);

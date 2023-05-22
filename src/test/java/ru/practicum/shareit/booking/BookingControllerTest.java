@@ -3,6 +3,7 @@ package ru.practicum.shareit.booking;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -91,6 +92,7 @@ public class BookingControllerTest {
 
     }
 
+    @DisplayName("Добавление букинга когда всё хорошо. ")
     @SneakyThrows
     @Test
     void add_whenAllIsOk_returnBookingForResponse() {

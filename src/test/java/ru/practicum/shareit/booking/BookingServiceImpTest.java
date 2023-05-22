@@ -3,6 +3,7 @@ package ru.practicum.shareit.booking;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -218,6 +219,7 @@ class BookingServiceImpTest {
     void tearDown() {
     }
 
+    @DisplayName("Добавление букинга когда всё хорошо. ")
     @Test
     void createBooking_whenAllAreOk_returnSavedBookingDto() {
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));

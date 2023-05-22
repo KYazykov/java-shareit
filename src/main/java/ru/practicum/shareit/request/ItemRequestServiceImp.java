@@ -87,8 +87,6 @@ public class ItemRequestServiceImp implements ItemRequestService {
             log.info(message);
             throw new ValidateException(message);
         }
-        System.out.println(userId);
-        System.out.println(requestId);
         ItemRequest result = itemRequestRepository.findById(requestId).orElseThrow(
                 () -> new ObjectNotFoundException("При попытке выдачи запроса по ID этот запрос не найден ."));
         log.info("Выдан запрос по его ID = '" + requestId + "'.");
