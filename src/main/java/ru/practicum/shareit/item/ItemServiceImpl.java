@@ -2,6 +2,9 @@ package ru.practicum.shareit.item;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.Booking;
@@ -83,6 +86,9 @@ public class ItemServiceImpl implements ItemService {
                         "' при добавлении вещи в репозиторий"));
         Item item = ItemMapper.toItem(itemDto);
         item.setOwner(owner);
+        if (itemDto.getRequestId() != null) {
+            item.setRequestId(itemDto.getRequestId());
+        }
         return ItemMapper.toItemDto(itemRepositoryJpa.save(item));
     }
 
@@ -135,25 +141,24 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> searchItems(String text) {
-        List<ItemDto> selectedItems = new ArrayList<>();
-        if (text.isBlank()) {
-            return List.of();
+    public List<ItemDto> searchItems(String text, Integer from, Integer size) {
+        if (text == null || text.isBlank()) {
+            return new ArrayList<>();
         }
-        for (Item item : itemRepositoryJpa.findAll()) {
-            if (item.getName().toLowerCase().contains(text.toLowerCase())
-                    || item.getDescription().toLowerCase().contains(text.toLowerCase()) && item.getAvailable()) {
-                selectedItems.add(ItemMapper.toItemDto(item));
-            }
-        }
-        return selectedItems;
+        Pageable pageable = PageRequest.of(from / size, size, Sort.unsorted());
+        List<Item> resultItems = itemRepositoryJpa.searchItemsByText(text, pageable);
+        return resultItems.stream().map(ItemMapper::toItemDto)
+                .filter(ItemDto::getAvailable).collect(Collectors.toList());
     }
 
     @Override
     public ItemDtoWithBookingAndComments getItemWithBookingAndComment(Long itemId, Long ownerId) {
+        User ownerFromBd = userRepository.findById(ownerId)
+                .orElseThrow(() -> new UserNotFoundException("Ошибка при обновлении вещи с ID = " + itemId
+                        + " пользователя с ID = " + ownerId + " в БД. В БД отсутствует запись о пользователе."));
         Item itemFromBd = itemRepositoryJpa.findById(itemId)
-                .orElseThrow(() -> new UserNotFoundException("Ошибка при получении списка вещей пользователя с ID = "
-                        + ownerId + "в БД. В БД отсутствует запись о пользователе."));
+                .orElseThrow(() -> new ObjectNotFoundException("Ошибка при получении списка вещей пользователя с ID = "
+                        + ownerId + " в БД. В БД отсутствует запись о вещи."));
         List<Booking> allBookings = bookingRepositoryJpa.findAllByItemOrderByStartTimeDesc(itemFromBd);
         Booking lastBooking = null;
         Booking nextBooking = null;

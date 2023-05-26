@@ -16,17 +16,37 @@ public class BookingMapper {
         return new Booking(
                 bookingDto.getId(),
                 item,
-                bookingDto.getBooker(),
+                item.getOwner(),
                 bookingDto.getStartTime(),
                 bookingDto.getEndTime(),
                 bookingDto.getBookingStatus());
+    }
+
+    public static Booking toBooking(BookingForResponse bookingForResponse, Item item) {
+        return new Booking(
+                bookingForResponse.getId(),
+                item,
+                item.getOwner(),
+                bookingForResponse.getStartTime(),
+                bookingForResponse.getEndTime(),
+                bookingForResponse.getStatus());
+    }
+
+    public static Booking toBooking(BookingForItemDto bookingForItemDto, Item item) {
+        return new Booking(
+                bookingForItemDto.getId(),
+                item,
+                item.getOwner(),
+                bookingForItemDto.getStartTime(),
+                bookingForItemDto.getEndTime(),
+                bookingForItemDto.getStatus());
     }
 
     public static BookingDto toBookingDto(Booking booking) {
         return new BookingDto(
                 booking.getId(),
                 booking.getItem().getId(),
-                booking.getBooker(),
+                UserMapper.toUserForResponse(booking.getBooker()),
                 booking.getStartTime(),
                 booking.getEndTime(),
                 booking.getBookingStatus());
