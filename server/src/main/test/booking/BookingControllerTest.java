@@ -1,4 +1,4 @@
-package ru.practicum.shareit.booking;
+package src.main.test.booking;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;

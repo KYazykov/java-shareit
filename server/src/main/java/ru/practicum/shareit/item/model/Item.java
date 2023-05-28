@@ -7,7 +7,6 @@ import ru.practicum.shareit.item.comment.Comment;
 import ru.practicum.shareit.user.User;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 
@@ -23,12 +22,10 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, updatable = false, unique = true)
     private Long id;
-    @NotBlank(message = "Поле логина не может быть пустым.")
     @EqualsAndHashCode.Exclude
     @Column(name = "name", nullable = false)
     private String name;
 
-    @NotBlank(message = "Поле логина не может быть пустым.")
     @EqualsAndHashCode.Exclude
     @Column(name = "description", nullable = false)
     private String description;

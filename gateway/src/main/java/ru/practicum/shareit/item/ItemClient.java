@@ -1,4 +1,4 @@
-package src.main.java.ru.practicum.shareit.item;
+package ru.practicum.shareit.item;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -6,9 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.DefaultUriBuilderFactory;
-import src.main.java.ru.practicum.shareit.client.BaseClient;
-import src.main.java.ru.practicum.shareit.item.comment.CommentDto;
-import src.main.java.ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.client.BaseClient;
+import ru.practicum.shareit.item.comment.CommentDto;
+import ru.practicum.shareit.item.dto.ItemDto;
 
 import java.util.Map;
 

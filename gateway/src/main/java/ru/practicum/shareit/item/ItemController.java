@@ -1,15 +1,15 @@
-package src.main.java.ru.practicum.shareit.item;
+package ru.practicum.shareit.item;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import src.main.java.ru.practicum.shareit.exception.ValidateException;
-import src.main.java.ru.practicum.shareit.item.comment.CommentDto;
-import src.main.java.ru.practicum.shareit.item.dto.ItemDto;
-import src.main.java.ru.practicum.shareit.validation.CreateObject;
-import src.main.java.ru.practicum.shareit.validation.UpdateObject;
+import ru.practicum.shareit.exception.ValidateException;
+import ru.practicum.shareit.item.comment.CommentDto;
+import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.validation.CreateObject;
+import ru.practicum.shareit.validation.UpdateObject;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.PositiveOrZero;
@@ -49,7 +49,6 @@ public class ItemController {
         if (itemDto.getName() == null && itemDto.getDescription() == null && itemDto.getAvailable() == null) {
             throw new ValidateException("При обновлении вещи все поля равны null.");
         }
-        System.out.println(" - Обновление вещи с ID = " + itemId + " юзера с ID = " + ownerId + ".");
         return itemClient.updateInStorage(itemId, itemDto, ownerId);
     }
 

@@ -1,4 +1,4 @@
-package src.main.java.ru.practicum.shareit.user;
+package ru.practicum.shareit.user;
 
 import lombok.*;
 

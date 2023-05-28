@@ -1,8 +1,8 @@
-package src.main.java.ru.practicum.shareit.booking.dto;
+package ru.practicum.shareit.booking.dto;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.*;
-import src.main.java.ru.practicum.shareit.booking.BookingStatus;
+import ru.practicum.shareit.booking.BookingStatus;
 
 import java.time.LocalDateTime;
 

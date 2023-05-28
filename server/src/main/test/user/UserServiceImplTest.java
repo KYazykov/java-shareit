@@ -1,4 +1,4 @@
-package ru.practicum.shareit.user;
+package src.main.test.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;

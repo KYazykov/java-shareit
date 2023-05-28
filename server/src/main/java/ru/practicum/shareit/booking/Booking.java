@@ -1,4 +1,4 @@
-package src.main.java.ru.practicum.shareit.booking;
+package ru.practicum.shareit.booking;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
@@ -6,7 +6,6 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,7 +15,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
 @AllArgsConstructor
 public class Booking {
 
@@ -32,10 +30,8 @@ public class Booking {
     @JsonIgnore
     private User booker;
     @Column(name = "start_time")
-    @NonNull
     private LocalDateTime startTime;
     @Column(name = "end_time")
-    @NotNull
     private LocalDateTime endTime;
     @Column(name = "status")
     @Enumerated(EnumType.STRING)

@@ -6,9 +6,6 @@ import ru.practicum.shareit.item.comment.Comment;
 import ru.practicum.shareit.item.model.Item;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -26,14 +23,12 @@ public class User {
     @OneToMany(mappedBy = "owner")
     private List<Item> userItems;
 
-    @Email(message = "Почта не соответствует формату.")
-    @NotBlank(message = "Поле имени не может быть пустым.")
-    @NotNull
+
     @EqualsAndHashCode.Exclude
     @Column(name = "email", nullable = false)
     private String email;
 
-    @NotBlank(message = "Поле имени не может быть пустым.")
+
     @EqualsAndHashCode.Exclude
     @Column(name = "name", nullable = false)
     private String name;

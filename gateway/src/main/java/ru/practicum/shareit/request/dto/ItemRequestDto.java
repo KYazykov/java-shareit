@@ -1,8 +1,8 @@
-package src.main.java.ru.practicum.shareit.request.dto;
+package ru.practicum.shareit.request.dto;
 
 import lombok.*;
-import src.main.java.ru.practicum.shareit.user.UserForResponseDto;
-import src.main.java.ru.practicum.shareit.validation.CreateObject;
+import ru.practicum.shareit.user.UserForResponseDto;
+import ru.practicum.shareit.validation.CreateObject;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;

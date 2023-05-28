@@ -1,10 +1,10 @@
-package src.main.java.ru.practicum.shareit.booking.dto;
+package ru.practicum.shareit.booking.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import ru.practicum.shareit.booking.BookingStatus;
 import ru.practicum.shareit.item.dto.ItemForResponseDto;
-import src.main.java.ru.practicum.shareit.booking.BookingStatus;
-import src.main.java.ru.practicum.shareit.user.UserOnlyWithIdDto;
+import ru.practicum.shareit.user.UserOnlyWithIdDto;
 
 import java.time.LocalDateTime;
 

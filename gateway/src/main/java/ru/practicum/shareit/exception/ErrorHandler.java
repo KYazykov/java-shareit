@@ -1,87 +1,45 @@
-package src.main.java.ru.practicum.shareit.exception;
+package ru.practicum.shareit.exception;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import src.main.java.ru.practicum.shareit.booking.BookingController;
-import src.main.java.ru.practicum.shareit.item.ItemController;
-import src.main.java.ru.practicum.shareit.request.ItemRequestController;
-import src.main.java.ru.practicum.shareit.user.UserController;
 
+
+@RestControllerAdvice
 @Slf4j
-@RestControllerAdvice(assignableTypes = {ItemController.class, UserController.class, BookingController.class,
-        ItemRequestController.class})
+@Getter
 public class ErrorHandler {
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleMethodArgumentNotValidException(final ItemNotFoundException e) {
-        log.debug("Получен статус 400 Bad request {}", e.getMessage(), e);
-        return new ErrorResponse("Ошибка с предметом", e.getMessage());
-    }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleMethodArgumentNotValidException(final ValidateException e) {
-        log.debug("Получен статус 400 Bad request {}", e.getMessage(), e);
-        return new ErrorResponse("Ошибка с валидацией", e.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleMethodArgumentNotValidException(final ObjectNotFoundException e) {
-        log.debug("Получен статус 404 Not found {}", e.getMessage(), e);
-        return new ErrorResponse("Объект не найден", e.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleMethodArgumentNotValidException(final UserNotFoundException e) {
-        log.debug("Получен статус 404 Not found {}", e.getMessage(), e);
-        return new ErrorResponse("Пользователь не найден", e.getMessage());
+    public ResponseEntity<?> handleForBadRequest(final ValidateException ex) {
+        String error = "Error message";
+        String message = ex.getMessage();
+        log.error(error + " — " + message);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error message" + ex.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleItemAvailableNotValidException(final ItemAvailableException e) {
-        log.debug("Получен статус 400 Bad request {}", e.getMessage(), e);
-        return new ErrorResponse("Предмет недоступен для аренды", e.getMessage());
+    public ResponseEntity<?> handleForUnsupportedStatus(final UnsupportedStatusException ex) {
+        String error = "{\n\"error\":\"Unknown state: UNSUPPORTED_STATUS\",\n\"message\":\"UNSUPPORTED_STATUS\"\n}";
+        String message = ex.getMessage();
+        log.error(error + " — " + message);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\n\"error\":\"Unknown state: " +
+                "UNSUPPORTED_STATUS\",\n\"message\":\"UNSUPPORTED_STATUS\"\n}");
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleBookingNotValidException(final BookingValidateException e) {
-        log.debug("Получен статус 400 Bad request {}", e.getMessage(), e);
-        return new ErrorResponse("Введены неправильные данные для аренды вещи", e.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleForUnsupportedStatus(final UnsupportedStatusException e) {
-        log.debug("Получен статус 400 Bad request {}", e.getMessage(), e);
-        return new ErrorResponse("Unknown state: UNSUPPORTED_STATUS", e.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleCommentNotValidException(final CommentValidateException e) {
-        log.debug("Получен статус 400 Bad request {}", e.getMessage(), e);
-        return new ErrorResponse("Введены неправильные данные для оставления комментария", e.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleInternalServerException(final Exception e) {
-        log.debug("Получен статус 500 INTERNAL_SERVER_ERROR {}", e.getMessage(), e);
-        return new ErrorResponse("Ошибка внутреннего сервера", e.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleMethodArgumentNotValidException(final MethodArgumentNotValidException e) {
-        log.debug("Получен статус 400 Bad request {}", e.getMessage(), e);
-        return new ErrorResponse("Ошибка валидации данных", e.getMessage());
+    public ResponseEntity<?> handleForMethodArgumentNotValidException(final MethodArgumentNotValidException ex) {
+        String error = "Error 400. Не правильное значение аргумента.\t" + ex.getMessage();
+        String message = ex.getMessage();
+        log.error(error);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error 400. Не правильное значение аргумента.");
     }
 }

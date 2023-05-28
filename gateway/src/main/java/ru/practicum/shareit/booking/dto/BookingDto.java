@@ -1,11 +1,12 @@
-package src.main.java.ru.practicum.shareit.booking.dto;
+package ru.practicum.shareit.booking.dto;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import src.main.java.ru.practicum.shareit.booking.BookingStatus;
-import src.main.java.ru.practicum.shareit.user.UserForResponseDto;
-import src.main.java.ru.practicum.shareit.validation.CreateObject;
+import ru.practicum.shareit.booking.BookingStatus;
+import ru.practicum.shareit.user.UserForResponseDto;
+import ru.practicum.shareit.validation.CreateObject;
+import ru.practicum.shareit.validation.UpdateObject;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Future;
@@ -29,9 +30,13 @@ public class BookingDto {
     private UserForResponseDto booker;
     @JsonAlias({"start"})
     @FutureOrPresent(groups = {CreateObject.class}, message = "Окончание бронирования должно быть в будущем.")
+    @NotNull(groups = {CreateObject.class, UpdateObject.class}, message =
+            "Дата начала бронирования не может быть равна null.")
     private LocalDateTime startTime;
     @JsonAlias({"end"})
     @Future(groups = {CreateObject.class}, message = "Окончание бронирования должно быть в будущем.")
+    @NotNull(groups = {CreateObject.class, UpdateObject.class}, message =
+            "Дата окончания бронирования не может быть равна null.")
     private LocalDateTime endTime;
     @JsonProperty("status")
     private BookingStatus bookingStatus;

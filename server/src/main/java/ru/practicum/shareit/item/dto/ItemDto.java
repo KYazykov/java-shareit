@@ -8,7 +8,6 @@ import ru.practicum.shareit.booking.Booking;
 import ru.practicum.shareit.item.comment.Comment;
 import ru.practicum.shareit.user.User;
 
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 
@@ -18,9 +17,7 @@ import java.util.List;
 @Builder(toBuilder = true)
 public class ItemDto {
     private Long id;
-    @NotBlank(message = "Поле логина не может быть пустым.")
     private String name;
-    @NotBlank(message = "Поле описания не может быть пустым.")
     private String description;
     private Boolean available = null;
     private User owner;

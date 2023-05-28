@@ -1,14 +1,14 @@
-package src.main.java.ru.practicum.shareit.booking;
+package ru.practicum.shareit.booking;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import src.main.java.ru.practicum.shareit.booking.dto.BookingDto;
-import src.main.java.ru.practicum.shareit.exception.UnsupportedStatusException;
-import src.main.java.ru.practicum.shareit.exception.ValidateException;
-import src.main.java.ru.practicum.shareit.validation.CreateObject;
+import ru.practicum.shareit.booking.dto.BookingDto;
+import ru.practicum.shareit.exception.UnsupportedStatusException;
+import ru.practicum.shareit.exception.ValidateException;
+import ru.practicum.shareit.validation.CreateObject;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
