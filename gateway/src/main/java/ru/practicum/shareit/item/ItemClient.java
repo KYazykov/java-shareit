@@ -37,7 +37,7 @@ public class ItemClient extends BaseClient {
         return get("?from={from}&size={size}", ownerId, parameters);
     }
 
-    public ResponseEntity<Object> getItemByIdForOwner(Long itemId, Long ownerId) {
+    public ResponseEntity<Object> getItemWithBookingAndComment(Long itemId, Long ownerId) {
         return get("/" + itemId, ownerId);
     }
 

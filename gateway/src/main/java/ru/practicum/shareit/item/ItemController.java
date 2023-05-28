@@ -38,9 +38,9 @@ public class ItemController {
     }
 
     @GetMapping("/{itemId}")
-    public ResponseEntity<Object> getItemByIdForOwner(@RequestHeader(value = "X-Sharer-User-Id") Long ownerId,
-                                                      @PathVariable Long itemId) {
-        return itemClient.getItemByIdForOwner(itemId, ownerId);
+    public ResponseEntity<Object> getItemWithBookingAndComment(@RequestHeader(value = "X-Sharer-User-Id") Long ownerId,
+                                                               @PathVariable Long itemId) {
+        return itemClient.getItemWithBookingAndComment(itemId, ownerId);
     }
 
     @PatchMapping("{itemId}")
