@@ -42,4 +42,11 @@ public class ErrorHandler {
         log.error(error);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error 400. Не правильное значение аргумента.");
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleInternalServerException(final Exception e) {
+        log.debug("Получен статус 500 INTERNAL_SERVER_ERROR {}", e.getMessage(), e);
+        return new ErrorResponse("Ошибка внутреннего сервера", e.getMessage());
+    }
 }

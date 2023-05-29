@@ -48,7 +48,7 @@ public class BookingController {
     @GetMapping
     public ResponseEntity<Object> getByUserId(@RequestHeader("X-Sharer-User-Id") Long userId,
                                               @RequestParam(value = "state",
-                                                      defaultValue = "ALL", required = false) String state,
+                                                      defaultValue = "ALL") String state,
                                               @Min(0) @RequestParam(name = "from", defaultValue = "0") Integer from,
                                               @Min(1) @RequestParam(name = "size", defaultValue = "20") Integer size) {
         log.info("Получение списка всех бронирований текущего пользователя.");
@@ -59,8 +59,7 @@ public class BookingController {
 
     @GetMapping("/owner")
     public ResponseEntity<Object> getByOwnerId(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                               @RequestParam(value = "state", defaultValue = "ALL",
-                                                       required = false) String state,
+                                               @RequestParam(value = "state", defaultValue = "ALL") String state,
                                                @RequestParam(name = "from", defaultValue = "0") Integer from,
                                                @RequestParam(name = "size", defaultValue = "20") Integer size) {
         log.info("Получение списка бронирований для всех вещей текущего пользователя.");

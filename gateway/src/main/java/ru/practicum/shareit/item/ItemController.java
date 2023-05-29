@@ -12,6 +12,7 @@ import ru.practicum.shareit.validation.CreateObject;
 import ru.practicum.shareit.validation.UpdateObject;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PositiveOrZero;
 
 @RestController
@@ -54,11 +55,11 @@ public class ItemController {
 
     @GetMapping("/search")
     public ResponseEntity<Object> searchItems(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                              @RequestParam(value = "text", required = false) String text,
+                                              @NotBlank @RequestParam(value = "text") String text,
                                               @PositiveOrZero @RequestParam(name = "from", defaultValue = "0")
-                                              Integer from,
+                                                  Integer from,
                                               @Min(1) @RequestParam(name = "size", defaultValue = "10")
-                                              Integer size) {
+                                                  Integer size) {
         return itemClient.searchItemsByText(userId, text, from, size);
     }
 
