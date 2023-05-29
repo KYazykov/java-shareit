@@ -27,6 +27,7 @@ public class ErrorHandler {
         log.debug("Получен статус 404 Not found {}", e.getMessage(), e);
         return new ErrorResponse("Пользователь не найден", e.getMessage());
     }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleInternalServerException(final Exception e) {
