@@ -69,8 +69,9 @@ public class BookingController {
     }
 
     private void checkStartAndEndTimes(BookingDto bookingDto) {
-        if (bookingDto.getStartTime().isAfter(bookingDto.getEndTime())) {
-            String message = "Окончание бронирования не может быть раньше его начала.";
+        if (bookingDto.getStartTime().isAfter(bookingDto.getEndTime()) ||
+                bookingDto.getStartTime().equals(bookingDto.getEndTime())) {
+            String message = "Окончание бронирования не может быть раньше его начала или равняться ему";
             log.info(message);
             throw new ValidateException(message);
         }

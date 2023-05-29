@@ -29,6 +29,27 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleItemAvailableNotValidException(final ItemAvailableException e) {
+        log.debug("Получен статус 400 Bad request {}", e.getMessage(), e);
+        return new ErrorResponse("Предмет недоступен для аренды", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleBookingNotValidException(final BookingValidateException e) {
+        log.debug("Получен статус 400 Bad request {}", e.getMessage(), e);
+        return new ErrorResponse("Введены неправильные данные для аренды вещи", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleCommentNotValidException(final CommentValidateException e) {
+        log.debug("Получен статус 400 Bad request {}", e.getMessage(), e);
+        return new ErrorResponse("Введены неправильные данные для оставления комментария", e.getMessage());
+    }
+
+    @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleInternalServerException(final Exception e) {
         log.debug("Получен статус 500 INTERNAL_SERVER_ERROR {}", e.getMessage(), e);

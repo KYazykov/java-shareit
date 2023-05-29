@@ -2,6 +2,8 @@ package ru.practicum.shareit.item;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -12,8 +14,8 @@ import ru.practicum.shareit.validation.CreateObject;
 import ru.practicum.shareit.validation.UpdateObject;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PositiveOrZero;
+import java.util.Collections;
 
 @RestController
 @RequestMapping("/items")
@@ -55,17 +57,24 @@ public class ItemController {
 
     @GetMapping("/search")
     public ResponseEntity<Object> searchItems(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                              @NotBlank @RequestParam(value = "text") String text,
+                                              @RequestParam(value = "text") String text,
                                               @PositiveOrZero @RequestParam(name = "from", defaultValue = "0")
-                                                  Integer from,
+                                              Integer from,
                                               @Min(1) @RequestParam(name = "size", defaultValue = "10")
-                                                  Integer size) {
+                                              Integer size) {
+        if (text.isBlank()) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Content-Type", "application/json; charset=utf-8");
+
+            return new ResponseEntity<>(Collections.emptyList(), headers, HttpStatus.OK);
+        }
         return itemClient.searchItemsByText(userId, text, from, size);
     }
 
     @PostMapping("/{itemId}/comment")
     public ResponseEntity<Object> addCommentToItem(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                                   @PathVariable Long itemId, @RequestBody CommentDto inputCommentDto) {
+                                                   @PathVariable Long itemId, @RequestBody @Validated(CreateObject.class)
+                                                   CommentDto inputCommentDto) {
         return itemClient.saveComment(userId, itemId, inputCommentDto);
     }
 }
